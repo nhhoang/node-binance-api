@@ -63,7 +63,7 @@ module.exports = function() {
             agent: false,
             headers: {
                 'User-Agent': userAgent,
-                'Content-type': contentTypea
+                'Content-type': contentType
             }
         };
         request(opt, function(error, response, body) {
