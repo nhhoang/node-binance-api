@@ -718,9 +718,9 @@ module.exports = function() {
         });
     };
     return {
-  setProxyServer: function(value) {
-            base = value ? 'http://103.53.231.23:9090/https://api.binance.com/api/' : 'https://api.binance.com/api/';
-            console.log("setProxyServer", value, base);
+  setProxyServer: function(proxyServerIP = "") {
+            base = proxyServerIP + 'https://api.binance.com/api/';
+            console.log("setProxyServer", proxyServerIP, base);
         },
         /**
         * Gets depth cache for given symbol
