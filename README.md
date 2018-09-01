@@ -2,13 +2,13 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/jaggedsoft/node-binance-api.svg?maxAge=2400)](#)
 [![npm downloads](https://img.shields.io/npm/dt/node-binance-api.svg?maxAge=7200)](https://www.npmjs.com/package/node-binance-api)
 
+[![NPM](https://nodei.co/npm/node-binance-api.png?compact=true)](https://npmjs.org/package/node-binance-api)
+
 [![Build Status](https://travis-ci.org/jaggedsoft/node-binance-api.svg?branch=master&style=flat-square)](https://travis-ci.org/jaggedsoft/node-binance-api) 
 [![Coverage Status](https://coveralls.io/repos/github/jaggedsoft/node-binance-api/badge.svg?branch=master&style=flat-square)](https://coveralls.io/github/jaggedsoft/node-binance-api)
 [![CodeCov](https://codecov.io/gh/jaggedsoft/node-binance-api/branch/master/graph/badge.svg?style=flat-square)](https://codecov.io/github/jaggedsoft/node-binance-api/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/996757cec66542c0a64fca2b4cf8a936)](https://www.codacy.com/app/dmzoneill/node-binance-api?utm_source=github.com&utm_medium=referral&utm_content=jaggedsoft/node-binance-api&utm_campaign=Badge_Coverage)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/996757cec66542c0a64fca2b4cf8a936)](https://www.codacy.com/app/dmzoneill/node-binance-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jaggedsoft/node-binance-api&amp;utm_campaign=Badge_Grade)
-
-[![NPM](https://nodei.co/npm/node-binance-api.png?compact=true)](https://npmjs.org/package/node-binance-api)
 
 # Node Binance API
 This project is designed to help you make your own projects that interact with the [Binance API](https://github.com/binance-exchange/binance-official-api-docs). You can stream candlestick chart data, market depth, or use other advanced features such as setting stop losses and iceberg orders. This project seeks to have complete API coverage including WebSockets.
@@ -20,12 +20,24 @@ npm install node-binance-api --save
 
 #### Getting started
 ```javascript
-const binance = require('node-binance-api');
-binance.options({
+const binance = require('node-binance-api')().options({
   APIKEY: '<key>',
   APISECRET: '<secret>',
   useServerTime: true, // If you get timestamp errors, synchronize to server time at startup
   test: true // If you want to use sandbox mode where orders are simulated
+});
+```
+
+#### Instantiating Multiple Instances
+```javascript
+const Binance = require('node-binance-api');
+
+const instance1 = new Binance().options({
+  // ...
+});
+
+const instance2 = new Binance().options({
+  // ...
 });
 ```
 
@@ -1576,31 +1588,55 @@ binance.withdraw("BTC", "1C5gqLRs96Xq4V2ZZAR1347yUCpHie7sa", 0.2);
 [User Data: Account Balance Updates, Trade Updates, New Orders, Filled Orders, Cancelled Orders via WebSocket](https://github.com/jaggedsoft/node-binance-api/blob/master/examples/advanced.md#user-data-account-balance-updates-trade-updates-new-orders-filled-orders-cancelled-orders-via-websocket)
 
 
+### Proxy Support
+For the standard REST API the https_proxy or socks_proxy variable is honoured
+*NOTE* proxy package has no dns name support, please use proxy IP address
+
+**Linux**
+```bash
+export https_proxy=http://ip:port
+#export socks_proxy=socks://ip:port
+# run your app
+```
+
+**Windows**
+```bash
+set https_proxy=http://ip:port
+#set socks_proxy=socks://ip:port
+# run your app
+```
+
+For web sockets currently only the socks method is functional at this time
+
+**linux**
+```bash
+export socks_proxy=socks://ip:port
+# run your app
+```
+
+**windows**
+```bash
+set socks_proxy=socks://ip:port
+# run your app
+```
+
 ### Troubleshooting
 Verify that your system time is correct. If you have any suggestions don't hestitate to file an issue.
 
-Having problems? Try adding `useServerTime` to your options:
+Having problems? Try adding `useServerTime` to your options or setting `recvWindow`:
 ```js
 binance.options({
   APIKEY: 'xxx',
   APISECRET: 'xxx',
   useServerTime: true,
-  verbose: true, // Add extra output when subscribing to websockets, etc
+  recvWindow: 60000, // Set a higher recvWindow to increase response timeout
+  verbose: true, // Add extra output when subscribing to WebSockets, etc
   log: log => {
     console.log(log); // You can create your own logger here, or disable console output
   }
 });
 ```
 
-### Proxy Support
-Both the standard REST api and the Websockets api honour the environmental variable "https_proxy"
-
-To begin using the proxy, such as on linux, set the variable
-```js
-export https_proxy=http://yourproxy.com:port
-# run your app
-```
-
 [![Views](http://hits.dwyl.io/jaggedsoft/node-binance-api.svg)](http://hits.dwyl.io/jaggedsoft/node-binance-api)
 
-Thank you to all contributors: dmzoneill, keith1024, vaielab, nickreese, Tuitio, grandmore, itnok, CollinEstes, sethyx, mstijak, MadDeveloper, balthazar, bitoiu, matthewwoop, robaleman, hems and others!
+Thank you to all contributors: dmzoneill, dmitriz, keith1024, usama33, yanislk, learnathoner, vaielab, nickreese, Tuitio, grandmore, itnok, CollinEstes, sethyx, mstijak, MadDeveloper, balthazar, bitoiu, matthewwoop, robaleman, hems and others!
