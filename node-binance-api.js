@@ -24,7 +24,7 @@ let api = function Binance() {
     const SocksProxyAgent = require('socks-proxy-agent');
     const stringHash = require('string-hash');
     const async = require('async');
-    const base = 'https://api.binance.com/api/';
+    var base = 'https://api.binance.com/api/';
     const wapi = 'https://api.binance.com/wapi/';
     const stream = 'wss://stream.binance.com:9443/ws/';
     const combineStream = 'wss://stream.binance.com:9443/stream?streams=';
